@@ -16,11 +16,21 @@ router.post("/login", function(req, res, next) {
         }
     })
     .then(results => {
-        let finalResult = {...results.dataValues, success: true}
+        let finalResult = {
+            data: {
+                    ...results.dataValues, 
+                    success: true
+                }   
+            }
         res.json(finalResult);
     })
     .catch(error => {
-        res.json({success: false, error: "An error occurred"})
+        res.json({
+            data: {
+                success: false, 
+                error: "An error occurred"
+            }
+        });
     })
 });
 

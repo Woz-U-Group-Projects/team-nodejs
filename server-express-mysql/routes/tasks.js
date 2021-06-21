@@ -3,7 +3,12 @@ var router = express.Router();
 var models = require("../models");
 
 router.get("/", function(req, res, next) {
-  models.Task.findAll().then(tasks => res.json(tasks));
+  // models.Task.findAll().then(tasks => res.json(tasks));
+  res.json([{
+    "id": 1,
+    "name": "this task",
+    "complete": true
+  }]);
 });
 
 router.post("/", function(req, res, next) {

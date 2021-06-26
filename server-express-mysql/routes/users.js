@@ -3,7 +3,9 @@ var router = express.Router();
 var models = require("../models");
 
 router.get("/", function(req, res, next) {
-
+    models.user.findAll({}).then(response => {
+        res.json(response);
+    })
 });
 
 router.post("/login", function(req, res, next) {

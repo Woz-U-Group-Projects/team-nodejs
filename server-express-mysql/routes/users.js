@@ -16,17 +16,33 @@ router.post("/login", function(req, res, next) {
         }
     })
     .then(results => {
-        let finalResult = {...results.dataValues, success: true}
+        let finalResult = {...results.dataValues, success: true};
         res.json(finalResult);
     })
     .catch(error => {
         res.json({success: false, error: "An error occurred"});
-    })
+    });
 });
 
-// router.post("/signup", function(req, res, next) {
-//     let { newUser } = req.body; 
-//     models.user.findOrCreate({ newUser });
-// });
+router.post("/signup", function(req, res, next) {
+    let { email, password } = req.body; 
+    models.user.findOrCreate({ 
+        where: {
+            email: email,
+            password: password 
+        }
+    })
+    .spread((response, created) => {
+        if (created) {
+            let finalResult = {...response.dataValues, success: true};
+            res.json(finalResult);
+        } else {
+            res.send('This user already exists');
+        }
+    })
+    .catch(error => {
+        res.json({success: false, error: "An error occurred"});
+    });
+});
 
 module.exports = router;

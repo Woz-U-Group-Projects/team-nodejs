@@ -10,6 +10,10 @@ module.exports = {
       {
         email: 'anotherperson@gmail.com',
         password: 'password2'
+      },
+      {
+        email: 'pjharris1016@gmail.com',
+        password: 'ham30'
       }
     ], {});
 

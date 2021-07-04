@@ -15,7 +15,7 @@ import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
   function App(props) {
-    const [user, setUser] = useState({email: "", password: ""});
+    const [user, setUser] = useState([])
     const history = useHistory();
     const [isAuthenticating, setIsAuthenticating] = useState(true);
     const [isAuthenticated, userHasAuthenticated] = useState(false);
@@ -23,13 +23,14 @@ import { useHistory } from "react-router-dom";
     const themeMode = theme === 'light' ? lightTheme : darkTheme;
 
     useEffect(() => {
+      setUser(props)
       onLoad();
     }, []);
-
+ 
     if (!componentMounted) {
       return <div />
     };
-
+ 
     async function onLoad() {
       try {
         await Auth.currentSession();
@@ -43,7 +44,7 @@ import { useHistory } from "react-router-dom";
     
       setIsAuthenticating(false);
     }
-
+ 
     async function handleLogout() {
       await Auth.signOut();
     
@@ -51,7 +52,7 @@ import { useHistory } from "react-router-dom";
     
       history.push("/login");
     }
-
+ 
   return (
     !isAuthenticating && (
     <div className="App container py-3">
@@ -91,6 +92,6 @@ import { useHistory } from "react-router-dom";
     </div>
     )
   );
-}
-
+  }
+ 
 export default App;

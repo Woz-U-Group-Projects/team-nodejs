@@ -14,8 +14,8 @@ export default function Login(props) {
   const { userHasAuthenticated } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
-    email: "",
-    password: ""
+    email: props.user.email || "",
+    password: props.user.password || ""
   });
 
   function validateForm() {
@@ -24,11 +24,13 @@ export default function Login(props) {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setIsLoading(true);
     let url = "http://localhost:3001/users/login";
      axios.post(url, { email: fields.email, password: fields.password})
       .then(response => { 
         if (response.data.success && response.data.active) {
         console.log("user", props.user)
+        userHasAuthenticated(true);
         history.push("/")
       }
       else {

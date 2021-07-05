@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      models.user.hasOne(models.confirmation_code)
     }
   };
   user.init({
@@ -38,6 +38,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+    },
+    active: {
+      allowNull:false,
+      type: DataTypes.BOOLEAN,
+      defaultValue: sequelize.literal('0')
     }
   }, {
     sequelize,

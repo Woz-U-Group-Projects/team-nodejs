@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import { useHistory } from "react-router-dom";
@@ -7,7 +8,7 @@ import { useFormFields } from "../libs/hooksLib";
 import { onError } from "../libs/errorLib";
 import "./Signup.css";
 
-export default function Signup() {
+export default function Signup(props) {
   const [fields, handleFieldChange] = useFormFields({
     email: "",
     password: "",
@@ -33,18 +34,39 @@ export default function Signup() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     setIsLoading(true);
-
-    setNewUser("test");
-
-    setIsLoading(false);
+    let url = "http://localhost:3001/users/signup";
+    axios.post(url, { email: fields.email, password: fields.password})
+    .then(response => { 
+      console.log(response.data)
+      console.log(props)
+      if (response.data.success) {
+      props.setUser({ users: response.data })
+      setNewUser(true);
+      setIsLoading(false);
+      }
+      else {
+        history.push("/signup")
+      }
+    });    
   }
 
   async function handleConfirmationSubmit(event) {
     event.preventDefault();
-
-    setIsLoading(true);
+    setIsLoading(false);
+    let url = "http://localhost:3001/users/confirm";
+    axios.post(url, { email: fields.email, confirmationCode: fields.confirmationCode })
+    .then(response => { 
+      console.log(response)
+      if (response.data.success) {
+      props.setUser({ users: response.data })
+      history.push("/login");
+      }
+      else {
+        setNewUser(false);
+        history.push("/signup");
+      }
+    })
   }
 
   function renderConfirmationForm() {

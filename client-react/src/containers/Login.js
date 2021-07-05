@@ -27,10 +27,8 @@ export default function Login(props) {
     let url = "http://localhost:3001/users/login";
      axios.post(url, { email: fields.email, password: fields.password})
       .then(response => { 
-        console.log(response.data)
-        console.log(props)
-        if (response.data.success) {
-        props.setUser({ users: response.data })
+        if (response.data.success && response.data.active) {
+        console.log("user", props.user)
         history.push("/")
       }
       else {

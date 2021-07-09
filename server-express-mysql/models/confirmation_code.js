@@ -11,22 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
   };
   confirmation_code.init({
-    code_id: {
+    codeId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER.UNSIGNED
     },
-    confirmation_code: {
+    confirmationCode: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    created_at: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    expires_at: {
+    expiresAt: {
       allowNull: false,
       type: DataTypes.DATE,
       defaultValue: sequelize.literal('CURRENT_TIMESTAMP')

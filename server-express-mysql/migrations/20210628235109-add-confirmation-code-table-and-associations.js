@@ -3,22 +3,27 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('confirmation_codes', {
-      code_id: {
+      codeId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED
       },
-      confirmation_code: {
+      confirmationCode: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
-      expires_at: {
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      expiresAt: {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
@@ -26,12 +31,12 @@ module.exports = {
     });
     await queryInterface.addColumn(
       'users',
-      'code_id',
+      'codeId',
       {
         type: Sequelize.INTEGER.UNSIGNED,
         references: {
           model: 'confirmation_codes',
-          key: 'code_id'
+          key: 'codeId'
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
@@ -40,7 +45,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('users', 'code_id');
+    await queryInterface.removeColumn('users', 'codeId');
     await queryInterface.dropTable('confirmation_codes');
   }
 };

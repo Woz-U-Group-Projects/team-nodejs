@@ -3,35 +3,42 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class task extends Model {
+  class topic extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
   };
-  task.init({
-    id: {
+  topic.init({
+    topicId: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
       type: DataTypes.INTEGER.UNSIGNED
     },
-    name: DataTypes.STRING,
-    complete: DataTypes.BOOLEAN,
-    createdAt: {
+    userId: {
       allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      type: DataTypes.INTEGER.UNSIGNED
     },
-    updatedAt: {
+    heading: {
+      type: DataTypes.STRING,
       allowNull: false,
+      unique: true
+    },
+    body: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }, 
+    deletedAt: {
+      allowNull: true,
       type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: null
     }
   }, {
     sequelize,
-    modelName: 'task',
+    paranoid: true,
+    modelName: 'topic',
   });
-  return task;
+  return topic;
 };

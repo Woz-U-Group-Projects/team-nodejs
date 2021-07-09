@@ -41,7 +41,7 @@ export default function Signup(props) {
       console.log(response.data)
       console.log(props)
       if (response.data.success) {
-      props.setUser({ users: response.data })
+      props.setUser({ users: { email: fields.email } })
       setNewUser(true);
       setIsLoading(false);
       }

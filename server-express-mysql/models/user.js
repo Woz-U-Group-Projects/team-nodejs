@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      models.user.hasOne(models.confirmation_code)
+      models.user.hasOne(models.confirmation_code, { foreignKey: 'codeId' });
+      models.user.hasMany(models.topic, { foreignKey: 'userId' });
     }
   };
   user.init({
@@ -29,15 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+    codeId: {
+      allowNull: true,
+      type: DataTypes.INTEGER.UNSIGNED
     },
     active: {
       allowNull:false,

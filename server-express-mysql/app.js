@@ -8,6 +8,7 @@ require('dotenv').config();
 
 var tasksRouter = require("./routes/tasks");
 var usersRouter = require("./routes/users");
+var topicsRouter = require("./routes/topics");
 
 var app = express();
 
@@ -20,6 +21,7 @@ app.use(cors());
 
 app.use("/tasks", tasksRouter);
 app.use("/users", usersRouter);
+app.use("/topics", topicsRouter);
 
 models.sequelize.sync().then(function() {
   console.log("DB Sync'd up");

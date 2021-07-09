@@ -92,19 +92,19 @@ router.post("/signup", function(req, res, next) {
         if (created) {
             const code = String(Math.floor(Math.random() * 1000000));
             let dt = DateTime.now().plus({ hours: 1 }).toISO();
-            emailServer(email, code).catch(console.error);
+            // emailServer(email, code).catch(console.error);
             models.confirmation_code.create({
-                confirmation_code: code,
-                expires_at: dt
+                confirmationCode: code,
+                expiresAt: dt
             })
             .then(results => {
                 const queryText = `
                     UPDATE users 
-                    SET code_id = :code_id 
+                    SET codeId = :codeId 
                     WHERE id = :id`;
                 return db.sequelize.query(queryText,
                     {
-                        replacements: { code_id: results.dataValues.code_id, id: response.dataValues.id },
+                        replacements: { codeId: results.dataValues.codeId, id: response.dataValues.id },
                         type: QueryTypes.UPDATE
                     }
                 )
@@ -127,9 +127,9 @@ router.post("/signup", function(req, res, next) {
 router.post("/confirm", function(req, res, next) {
     const { email, confirmationCode } = req.body;
     const confirmationCodeQueryText = `
-        SELECT confirmation_code, expires_at FROM users 
+        SELECT confirmationCode, expiresAt FROM users 
         JOIN confirmation_codes 
-        ON users.code_id = confirmation_codes.code_id 
+        ON users.codeId = confirmation_codes.codeId 
         WHERE email = :email`;
     const activateUserQueryText = `
         UPDATE users
@@ -139,7 +139,7 @@ router.post("/confirm", function(req, res, next) {
         DELETE users.*, confirmation_codes.* 
         FROM confirmation_codes 
         JOIN users 
-        ON users.code_id = confirmation_codes.code_id 
+        ON users.codeId = confirmation_codes.codeId 
         WHERE email = :email`
     
     db.sequelize.query(confirmationCodeQueryText,
@@ -150,13 +150,13 @@ router.post("/confirm", function(req, res, next) {
     )
     .then(response => {
         let results = response[0][0];
-        let preformattedExpiresAt = results.expires_at.toString().slice(0, 33).replace("GMT", "");
+        let preformattedExpiresAt = results.expiresAt.toString().slice(0, 33).replace("GMT", "");
         let currentTimeUTC = DateTime.utc().toISO();
         let currentTimeUTCDuration = DateTime.fromISO(currentTimeUTC);
         let codeExpirationDuration = DateTime.fromFormat(preformattedExpiresAt, "EEE MMM dd yyyy HH:mm:ss ZZZ");
         let timeDifference = codeExpirationDuration.diff(currentTimeUTCDuration, ['minutes']).toObject();
 
-        if (results.confirmation_code == confirmationCode) {
+        if (results.confirmationCode == confirmationCode) {
             if (timeDifference.minutes > 0) {
                 db.sequelize.query(activateUserQueryText, {
                     replacements: { email: email },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Amplify } from 'aws-amplify';
 import config from './config';
+import ScrollToTop from "./components/pageScrollReset"
 
 Amplify.configure({
   Auth: {
@@ -34,6 +35,7 @@ Amplify.configure({
 ReactDOM.render(
     <React.StrictMode>
       <Router>
+        <ScrollToTop />
         <App />
       </Router>
     </React.StrictMode>,

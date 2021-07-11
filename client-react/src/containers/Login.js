@@ -11,7 +11,7 @@ import "./Login.css";
 
 export default function Login(props) {
   const history = useHistory();
-  const { userHasAuthenticated } = useAppContext();
+  const { userHasAuthenticated, user, setUser } = useAppContext();
   const [isLoading, setIsLoading] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     email: props.user.email || "",
@@ -29,7 +29,7 @@ export default function Login(props) {
      axios.post(url, { email: fields.email, password: fields.password})
       .then(response => { 
         if (response.data.success && response.data.active) {
-        console.log("user", props.user)
+        setUser({email: fields.props, password: fields.props})
         userHasAuthenticated(true);
         history.push("/")
       }

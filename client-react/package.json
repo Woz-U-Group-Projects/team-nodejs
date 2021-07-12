@@ -5,6 +5,7 @@
   "dependencies": {
     "aws-amplify": "^4.1.1",
     "axios": "^0.19.0",
+    "create-react-class": "^15.7.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-bootstrap": "^1.6.1",
@@ -13,7 +14,8 @@
     "react-router-bootstrap": "^0.25.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.0.1",
-    "styled-components": "^5.3.0"
+    "styled-components": "^5.3.0",
+    "vuera": "^0.2.7"
   },
   "scripts": {
     "start": "react-scripts start",

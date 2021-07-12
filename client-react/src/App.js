@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 import  Task from "./components/Task";
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './components/Theme';
@@ -14,6 +14,9 @@ import { onError } from "./libs/errorLib";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
+import Form from "./components/Form";
+import Create from "./components/Create";
+
   function App(props) {
     const [user, setUser] = useState([])
     const history = useHistory();
@@ -72,9 +75,17 @@ import { useHistory } from "react-router-dom";
       <Navbar.Collapse className="justify-content-en">
         <Nav activeKey={window.location.pathname}>
         {isAuthenticated ? (
-              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-            ) : (
               <>
+              <LinkContainer to="/topics/create">
+              <Nav.Link>Create Post</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/settings/profile">
+              <Nav.Link>Settings</Nav.Link>
+              </LinkContainer>
+              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+              </>
+            ) : (
+          <>
           <LinkContainer to="/signup">
             <Nav.Link>Signup</Nav.Link>
           </LinkContainer>
@@ -86,7 +97,7 @@ import { useHistory } from "react-router-dom";
         </Nav>
       </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value={{ isAuthenticated, userHasAuthenticated }} {...props} setUser={setUser}>
+      <AppContext.Provider value = {{ value: [isAuthenticated, userHasAuthenticated], value2: [user, setUser]}} {...props}>
       <Routes {...props} setUser={setUser} user={user}/>
       </AppContext.Provider>
     </div>

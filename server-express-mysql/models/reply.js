@@ -25,10 +25,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       type: DataTypes.INTEGER.UNSIGNED
     },
-    level: {
-      allowNull: false,
+    parentId: {
+      allowNull: true,
       type: DataTypes.INTEGER.UNSIGNED,
-      defaultValue: 1
+      defaultValue: null
     },
     body: {
       type: DataTypes.STRING,
@@ -48,5 +48,5 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true,
     modelName: 'reply',
   });
-  return topic;
+  return reply;
 };

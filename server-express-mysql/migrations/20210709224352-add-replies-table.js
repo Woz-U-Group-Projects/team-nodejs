@@ -17,10 +17,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER.UNSIGNED
       },
-      level: {
-        allowNull: false,
+      parentId: {
+        allowNull: true,
         type: Sequelize.INTEGER.UNSIGNED,
-        defaultValue: 1
+        defaultValue: null  
       },
       body: {
         allowNull: false,

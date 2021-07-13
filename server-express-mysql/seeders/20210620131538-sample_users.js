@@ -17,7 +17,11 @@ module.exports = {
         email: 'pjharris1016@gmail.com',
         password: 'ham30',
         active: true
-
+      },
+      {
+        email: 'susang1972@gmail.com',
+        password: 'kittensaremyfavorite99',
+        active: true
       }
     ], {});
 

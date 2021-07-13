@@ -1,19 +1,30 @@
 'use strict';
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('tasks', {
-      id: {
+    await queryInterface.createTable('replies', {
+      replyId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER.UNSIGNED
       },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false
+      topicId: {
+        allowNull: false,
+        type: Sequelize.INTEGER.UNSIGNED
       },
-      complete: {
-        type: Sequelize.BOOLEAN
+      userId: {
+        allowNull: false,
+        type: Sequelize.INTEGER.UNSIGNED
+      },
+      parentId: {
+        allowNull: true,
+        type: Sequelize.INTEGER.UNSIGNED,
+        defaultValue: null  
+      },
+      body: {
+        allowNull: false,
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
@@ -24,10 +35,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+      },
+      deletedAt: {
+        allowNull:" true",
+        type: Sequelize.DATE
       }
     });
   },
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('tasks');
+    await queryInterface.dropTable('replies');
   }
 };

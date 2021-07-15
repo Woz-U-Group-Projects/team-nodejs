@@ -36,6 +36,7 @@ export default class Form extends Component{
         console.log(this.state)
         let url = "http://localhost:3001/topics/create"
         Axios.post(url, {...this.state}).then(response => console.log(response))
+        this.props.history.push("/topics/{topic.heading}")
     }
 
     render() {

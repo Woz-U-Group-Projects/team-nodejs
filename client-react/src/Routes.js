@@ -5,7 +5,9 @@ import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import NotFound from "./containers/NotFound";
 import Create from "./components/Create";
+import OP from "./components/OP";
 import UserProfileSettings from './components/User/Settings/UserProfileSettings.vue';
+
 
 export default function Routes(props) {
   return (
@@ -25,6 +27,7 @@ export default function Routes(props) {
       <Route exact path="/topics/create">
         <Create {...props} />
       </Route>
+      <Route path="/topics/:topicName" component={OP} {...props} />
       {/* Finally, catch all unmatched routes */}
       <Route>
         <NotFound />

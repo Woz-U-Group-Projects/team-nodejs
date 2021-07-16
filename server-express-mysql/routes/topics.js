@@ -30,13 +30,11 @@ router.get("/:topicName", function(req, res, next) {
 				}
 			]
 		})
-				.then(results => {
-					let topic = results[0]
-					res.json({success: true, topic})
-				})
-				.catch(error => res.json({success: false, error: "Unable to retrieve replies"}));
-		// })
-		// .catch(error => res.json({success: false, error: "Unable to find topic"}));
+		.then(results => {
+			let topic = results[0]
+			res.json({success: true, topic})
+		})
+		.catch(error => res.json({success: false, error: "Unable to retrieve topic or replies"}));
 })
 
 router.post("/createreply", function(req, res, next) {

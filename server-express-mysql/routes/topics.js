@@ -14,24 +14,29 @@ router.get("/", function(req, res, next) {
 
 router.get("/:topicName", function(req, res, next) {
 		let { topicName } = req.params;
-		let topic;
 		topicName = topicName.replace(/_/gi, " ");
-		models.topic.findOne({
-				where: {
-						heading: topicName 
+
+		models.topic.findAll({
+			where: {
+				heading: topicName
+			},
+			include: [
+				{
+					model: models.reply,
+					include: models.user
+				},
+				{
+					model: models.user
 				}
+			]
 		})
-		.then(response => {
-				topic = response;
-				models.reply.findAll({
-						where: {
-								topicId: response.dataValues.topicId,
-						}
+				.then(results => {
+					let topic = results[0]
+					res.json({success: true, topic})
 				})
-				.then(replies => res.json({success: true, topic, replies}))
 				.catch(error => res.json({success: false, error: "Unable to retrieve replies"}));
-		})
-		.catch(error => res.json({success: false, error: "Unable to find topic"}));
+		// })
+		// .catch(error => res.json({success: false, error: "Unable to find topic"}));
 })
 
 router.post("/createreply", function(req, res, next) {

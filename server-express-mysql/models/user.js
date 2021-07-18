@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       models.user.hasOne(models.confirmation_code, { foreignKey: 'codeId' });
       models.user.hasMany(models.topic, { foreignKey: 'userId' });
+      models.user.hasMany(models.reply, { foreignKey: 'userId' });
     }
   };
   user.init({

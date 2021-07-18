@@ -1,0 +1,25 @@
+.container {
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.replies {
+  border: 1px solid red;
+}
+
+.replies:hover {
+  background-color:blueviolet;
+}
+
+.render-form {
+  display: block;
+}
+
+.no-render-form {
+  display: none;
+}
+
+span {
+  color: red;
+}
+

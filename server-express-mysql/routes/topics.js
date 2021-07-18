@@ -2,11 +2,11 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 const db = require("../models/index");
-const QueryTypes = require("sequelize");
 const { DateTime } = require("luxon");
 
 router.get("/", function(req, res, next) {
-		models.topic.findAll().then(response => {
+		models.topic.findAll({
+		}).then(response => {
 				res.json(response);
 		})
 		.catch(error => res.json({error: error}));
@@ -16,14 +16,14 @@ router.get("/:topicName", function(req, res, next) {
 		let { topicName } = req.params;
 		topicName = topicName.replace(/_/gi, " ");
 
-		models.topic.findAll({
+		models.topic.findAndCountAll({
 			where: {
 				heading: topicName
 			},
 			include: [
 				{
 					model: models.reply,
-					include: models.user
+					include: models.user,
 				},
 				{
 					model: models.user
@@ -31,15 +31,14 @@ router.get("/:topicName", function(req, res, next) {
 			]
 		})
 		.then(results => {
-			let topic = results[0]
-			res.json({success: true, topic})
+			let topic = results
+			res.json({success: true, count: topic.count, topic: topic.rows})
 		})
 		.catch(error => res.json({success: false, error: "Unable to retrieve topic or replies"}));
 })
 
 router.post("/createreply", function(req, res, next) {
 	let { email, password, topicId, replyId, body } = req.body;
-	console.log(req.body)
 	models.user.findOne({
 		where: {
 			email: email,

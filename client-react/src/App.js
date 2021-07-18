@@ -14,8 +14,6 @@ import { onError } from "./libs/errorLib";
 import { AppContext } from "./libs/contextLib";
 import { Auth } from "aws-amplify";
 import { useHistory } from "react-router-dom";
-import Form from "./components/Form";
-import Create from "./components/Create";
 
   function App(props) {
     const [user, setUser] = useState([])
@@ -97,7 +95,7 @@ import Create from "./components/Create";
         </Nav>
       </Navbar.Collapse>
       </Navbar>
-      <AppContext.Provider value = {{ value: [isAuthenticated, userHasAuthenticated], value2: [user, setUser]}} {...props}>
+      <AppContext.Provider value = { [isAuthenticated, userHasAuthenticated]} {...props}>
       <Routes {...props} setUser={setUser} user={user}/>
       </AppContext.Provider>
     </div>

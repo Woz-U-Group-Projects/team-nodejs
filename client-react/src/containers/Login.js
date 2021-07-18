@@ -11,7 +11,8 @@ import "./Login.css";
 
 export default function Login(props) {
   const history = useHistory();
-  const { userHasAuthenticated, user, setUser } = useAppContext();
+  const { userHasAuthenticated } = useAppContext();
+  const { user, setUser } = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
     email: props.user.email || "",

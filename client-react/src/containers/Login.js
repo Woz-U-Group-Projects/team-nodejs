@@ -30,8 +30,8 @@ export default function Login(props) {
      axios.post(url, { email: fields.email, password: fields.password})
       .then(response => { 
         if (response.data.success && response.data.active) {
-        setUser({email: fields.props, password: fields.props})
-        userHasAuthenticated(true);
+        // setUser({email: fields.props, password: fields.props})
+        // userHasAuthenticated(true);
         history.push("/")
       }
       else {

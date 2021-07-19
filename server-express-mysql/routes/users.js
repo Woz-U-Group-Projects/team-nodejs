@@ -92,7 +92,7 @@ router.post("/signup", function(req, res, next) {
         if (created) {
             const code = String(Math.floor(Math.random() * 1000000));
             let dt = DateTime.now().plus({ hours: 1 }).toISO();
-            // emailServer(email, code).catch(console.error);
+            emailServer(email, code).catch(console.error);
             models.confirmation_code.create({
                 confirmationCode: code,
                 expiresAt: dt

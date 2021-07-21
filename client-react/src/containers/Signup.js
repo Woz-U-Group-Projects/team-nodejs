@@ -41,7 +41,6 @@ export default function Signup(props) {
       console.log(response.data)
       console.log(props)
       if (response.data.success) {
-      props.setUser({ users: { email: fields.email } })
       setNewUser(true);
       setIsLoading(false);
       }
@@ -59,7 +58,6 @@ export default function Signup(props) {
     .then(response => { 
       console.log(response)
       if (response.data.success) {
-      props.setUser({ users: response.data })
       history.push("/login");
       }
       else {

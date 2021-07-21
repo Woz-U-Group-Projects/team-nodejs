@@ -15,8 +15,7 @@ export default function Routes(props) {
       <Route exact path="/">
         <Home {...props} />
       </Route>
-      <Route exact path="/login">
-        <Login {...props} />
+      <Route exact path="/login" component={Login}>
       </Route>
       <Route exact path="/signup">
         <Signup {...props} />

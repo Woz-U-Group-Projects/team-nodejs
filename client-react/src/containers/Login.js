@@ -3,20 +3,19 @@ import Form from "react-bootstrap/Form";
 import { useHistory } from "react-router-dom";
 import LoaderButton from "../components/LoaderButton";
 import React, { setState, useState, useEffect } from "react";
-import { useAppContext } from "../libs/contextLib";
 import { useFormFields } from "../libs/hooksLib";
+import { useUser } from "../context/UserContext";
 import { onError } from "../libs/errorLib";
 import NotFound from "../containers/NotFound";
 import "./Login.css";
 
 export default function Login(props) {
   const history = useHistory();
-  const { userHasAuthenticated } = useAppContext();
-  const { user, setUser } = useState();
+  const [user, setUser] = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [fields, handleFieldChange] = useFormFields({
-    email: props.user.email || "",
-    password: props.user.password || ""
+    email: "",
+    password: ""
   });
 
   function validateForm() {
@@ -28,9 +27,11 @@ export default function Login(props) {
     setIsLoading(true);
     let url = "http://localhost:3001/users/login";
      axios.post(url, { email: fields.email, password: fields.password})
-      .then(response => { 
+      .then(response => {
         if (response.data.success && response.data.active) {
-        // setUser({email: fields.props, password: fields.props})
+          console.log(response.data)
+          let email = response.data.email
+        setUser({email: response.data.email, password: response.data.password, loggedIn: true})
         // userHasAuthenticated(true);
         history.push("/")
       }

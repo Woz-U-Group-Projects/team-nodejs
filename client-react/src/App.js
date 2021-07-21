@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Component } from "react";
-import  Task from "./components/Task";
+import Task from "./components/Task";
 import { ThemeProvider } from 'styled-components';
 import { lightTheme, darkTheme } from './components/Theme';
 import { GlobalStyles } from './components/Global';
@@ -12,95 +12,78 @@ import Nav from "react-bootstrap/Nav"
 import { LinkContainer } from "react-router-bootstrap";
 import { onError } from "./libs/errorLib";
 import { AppContext } from "./libs/contextLib";
-import { Auth } from "aws-amplify";
+import { Auth } from "aws-amplify"
 import { useHistory } from "react-router-dom";
+import { UserProvider, useUser } from "./context/UserContext"
 
-  function App(props) {
-    const [user, setUser] = useState([])
-    const history = useHistory();
-    const [isAuthenticating, setIsAuthenticating] = useState(true);
-    const [isAuthenticated, userHasAuthenticated] = useState(false);
-    const [theme, toggleTheme, componentMounted] = useDarkMode();
-    const themeMode = theme === 'light' ? lightTheme : darkTheme;
+function App(props) {
+  
+  const [theme, toggleTheme, componentMounted] = useDarkMode();
+  const themeMode = theme === 'light' ? lightTheme : darkTheme;
 
-    useEffect(() => {
-      setUser(props)
-      onLoad();
-    }, []);
- 
-    if (!componentMounted) {
-      return <div />
-    };
- 
-    async function onLoad() {
-      try {
-        await Auth.currentSession();
-        userHasAuthenticated(true);
-      }
-      catch(e) {
-        if (e !== 'No current user') {
-          onError(e);
-        }
-      }
-    
-      setIsAuthenticating(false);
-    }
- 
-    async function handleLogout() {
-      await Auth.signOut();
-    
-      userHasAuthenticated(false);
-    
-      history.push("/login");
-    }
- 
   return (
-    !isAuthenticating && (
-    <div className="App container py-3">
-      <ThemeProvider theme={themeMode}>
-      <>
-        <GlobalStyles />
-        <Toggle theme={theme} toggleTheme={toggleTheme} />
-      </>
-    </ThemeProvider>
-      <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
-      <LinkContainer to="/">
-        <Navbar.Brand className="font-weight-bold text-muted">
-          Chat Bubbles
-        </Navbar.Brand>
-      </LinkContainer>
-        <Navbar.Toggle />
-      <Navbar.Collapse className="justify-content-en">
-        <Nav activeKey={window.location.pathname}>
-        {isAuthenticated ? (
-              <>
-              <LinkContainer to="/topics/create">
-              <Nav.Link>Create Post</Nav.Link>
-              </LinkContainer>
-              <LinkContainer to="/settings/profile">
-              <Nav.Link>Settings</Nav.Link>
-              </LinkContainer>
-              <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-              </>
-            ) : (
+   (
+      <div className="App container py-3">
+        <ThemeProvider theme={themeMode}>
           <>
-          <LinkContainer to="/signup">
-            <Nav.Link>Signup</Nav.Link>
-          </LinkContainer>
-          <LinkContainer to="/login">
-            <Nav.Link>Login</Nav.Link>
-          </LinkContainer>
-        </>
-        )}
-        </Nav>
-      </Navbar.Collapse>
-      </Navbar>
-      <AppContext.Provider value = { [isAuthenticated, userHasAuthenticated]} {...props}>
-      <Routes {...props} setUser={setUser} user={user}/>
-      </AppContext.Provider>
-    </div>
+            <GlobalStyles />
+            <Toggle theme={theme} toggleTheme={toggleTheme} />
+          </>
+        </ThemeProvider>
+        <UserProvider>
+          <Navigation />
+            <Routes {...props} />
+          </UserProvider>
+      </div>
     )
   );
+}
+
+function Navigation(props) {
+  const history = useHistory();
+  const [isAuthenticating, setIsAuthenticating] = useState(true);
+  const [isAuthenticated, userHasAuthenticated] = useState(false);
+  const [user, setUser] = useUser();
+
+  function handleLogout() {
+    setUser({loggedIn: false});
+    history.push("/login");
   }
- 
+
+  return (
+    <Navbar collapseOnSelect bg="light" expand="md" className="mb-3">
+    <LinkContainer to="/">
+      <Navbar.Brand className="font-weight-bold text-muted">
+        Chat Bubbles
+  </Navbar.Brand>
+    </LinkContainer>
+    <Navbar.Toggle />
+    <Navbar.Collapse className="justify-content-en">
+      <Nav activeKey={window.location.pathname}>
+        {user.loggedIn ? (
+          <>
+            <LinkContainer to="/topics/create">
+              <Nav.Link>Create Post</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/settings/profile">
+              <Nav.Link>Settings</Nav.Link>
+            </LinkContainer>
+            <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+          </>
+        ) : (
+            <>
+              <LinkContainer to="/signup">
+                <Nav.Link>Signup</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/login">
+                <Nav.Link>Login</Nav.Link>
+              </LinkContainer>
+            </>
+          )}
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
+  )
+}
+
 export default App;

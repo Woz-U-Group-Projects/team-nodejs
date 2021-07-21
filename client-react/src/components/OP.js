@@ -8,7 +8,6 @@ import axios from "axios";
 import "./OP.css"
 
 export default function OP(props) {
-  console.log("PROPS", props);
   const [replies, setReplies] = useState([""]);
   const [topic, setTopic] = useState("");
   const [isLoading, setIsLoading] = useState(false);
